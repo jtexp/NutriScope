@@ -82,11 +82,11 @@ public class TdeeCalculator
 
         if(sex.equals("Male"))
         {
-            return 10 * weight + 6.25 * height - 5 * dAge + 5 * dActivityLevel;
+            return (10 * weight + 6.25 * height - 5 * dAge + 5) * dActivityLevel;
         }
         else
         {
-            return 10 * weight + 6.25 * height - 5 * dAge - 161 * dActivityLevel;
+            return (10 * weight + 6.25 * height - 5 * dAge - 161) * dActivityLevel;
         }
 
         } catch(NumberFormatException ex) {
