@@ -28,9 +28,6 @@ final public class FoodRepository implements Repository<Food> {
 
     private FoodReportService foodReportService;
 
-    public FoodRepository() {
-
-    }
 
     @Inject
     public FoodRepository(FoodReportService foodReportService) {

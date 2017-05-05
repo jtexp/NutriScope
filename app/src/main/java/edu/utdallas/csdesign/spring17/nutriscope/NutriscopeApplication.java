@@ -13,6 +13,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFoodR
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFoodRepositoryModule;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.DaggerConsumedFoodRepositoryComponent;
 import edu.utdallas.csdesign.spring17.nutriscope.data.food.DaggerFoodRepositoryComponent;
+import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodRepositoryComponent;
 import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodRepositoryModule;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.DaggerHistoryRepositoryComponent;
@@ -24,6 +25,8 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionFirebas
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepositoryComponent;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepositoryModule;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportClient;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportService;
 import edu.utdallas.csdesign.spring17.nutriscope.data.user.DaggerUserManagerComponent;
 import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManager;
 import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManagerComponent;
@@ -67,17 +70,14 @@ public class NutriscopeApplication extends Application {
                 .historyRepositoryModule(new HistoryRepositoryModule(new HistoryRepository(userManagerComponent.getUserManager())))
                 .build();
 
+        FoodReportService foodReportService = new FoodReportClient(getCacheDir()).getFoodReportService();
         foodRepositoryComponent = DaggerFoodRepositoryComponent.builder()
-                .foodRepositoryModule(new FoodRepositoryModule()).build();
+                .foodRepositoryModule(new FoodRepositoryModule(new FoodRepository(foodReportService))).build();
 
         nutritionRepositoryComponent = DaggerNutritionRepositoryComponent.builder()
                 .nutritionRepositoryModule(new NutritionRepositoryModule(
                         new NutritionRepository(new NutritionFirebaseRepository())))
                 .build();
-
-
-
-
 
         consumedFoodRepositoryComponent = DaggerConsumedFoodRepositoryComponent.builder()
                 .consumedFoodRepositoryModule(new ConsumedFoodRepositoryModule(

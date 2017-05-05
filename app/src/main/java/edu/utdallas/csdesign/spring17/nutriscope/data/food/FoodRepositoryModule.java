@@ -12,9 +12,14 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportServi
 @Module
 public class FoodRepositoryModule {
 
-    @Provides
-    FoodReportService provideFoodReportService() {
-        return new FoodReportClient().getFoodReportService();
+    private final FoodRepository foodRepository;
+
+    public FoodRepositoryModule(FoodRepository foodRepository) {
+        this.foodRepository = foodRepository;
     }
 
+    @Provides
+    FoodRepository providesFoodRepository() {
+        return foodRepository;
+    }
 }

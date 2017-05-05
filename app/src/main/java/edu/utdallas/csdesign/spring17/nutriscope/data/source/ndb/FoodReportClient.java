@@ -2,8 +2,10 @@ package edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb;
 
 import android.util.Log;
 
+import java.io.File;
 import java.io.IOException;
 
+import okhttp3.Cache;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -25,10 +27,13 @@ public class FoodReportClient {
 
     private FoodReportService foodReportService;
 
-    public FoodReportClient() {
+    public FoodReportClient(File cacheDir) {
+
+        Cache cache = new Cache(cacheDir, 10*1024*1024);
+
         OkHttpClient.Builder client = new OkHttpClient.Builder();
 
-        //client.cache(new Cache())
+        client.cache(cache);
 
         client.addInterceptor(new Interceptor() {
             @Override
